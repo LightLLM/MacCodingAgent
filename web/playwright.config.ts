@@ -33,6 +33,7 @@ export default defineConfig({
         ...process.env,
         MCA_MODEL_PROVIDER: "stub",
         MCA_PORT: "8787",
+        MCA_APP_URL: baseURL,
       },
     },
     {
