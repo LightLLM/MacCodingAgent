@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build -w @mac-coding-agent/web",
+  "outputDirectory": "web/.next",
+  "rewrites": [
+    {
+      "source": "/agent-api/:path*",
+      "destination": "/api/:path*"
+    }
+  ]
+}

@@ -68,6 +68,17 @@ npm test             # unit then e2e
 
 The daemon keeps an uptime clock, queues coding tasks, streams chat replies, and exposes REST + Server-Sent Events so both clients stay in sync.
 
+## Deploy on Vercel
+
+The web app includes hosted `/api/*` routes so it runs on Vercel without a separate Mac daemon (stub model for the preview). Local `npm run dev` still uses the 24/7 agent on `:8787`.
+
+```bash
+# from repo root (requires Vercel login / VERCEL_TOKEN)
+npx vercel --prod
+```
+
+Or connect the GitHub repo in the Vercel dashboard (root directory = repo root; `vercel.json` is included).
+
 ## Screenshots
 
 | Home | Agent chat | iPhone companion |
