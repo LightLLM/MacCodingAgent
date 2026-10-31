@@ -16,8 +16,11 @@ export default function HomePage() {
             <Link className="btn btn-primary" href="/app">
               Open agent
             </Link>
-            <Link className="btn btn-ghost" href="/models">
-              Choose local model
+            <Link className="btn btn-ghost" href="/download">
+              Download for macOS
+            </Link>
+            <Link className="btn btn-ghost" href="/pricing">
+              Pay with Stripe
             </Link>
           </div>
         </div>

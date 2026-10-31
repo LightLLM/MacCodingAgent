@@ -5,11 +5,13 @@
   "description": "24/7 Mac OS coding agent powered by open-source and local models",
   "workspaces": [
     "agent",
-    "web"
+    "web",
+    "macos"
   ],
   "scripts": {
     "dev": "concurrently -n agent,web -c teal,blue \"npm run dev -w agent\" \"npm run dev -w web\"",
-    "build": "npm run build -w agent && npm run build -w web",
+    "build": "npm run build -w agent && npm run pack:macos && npm run build -w web",
+    "pack:macos": "node macos/scripts/package-macos.js",
     "start": "concurrently -n agent,web -c teal,blue \"npm run start -w agent\" \"npm run start -w web\"",
     "test": "npm run test -w agent && npm run test -w web",
     "test:unit": "npm run test:unit -w agent && npm run test:unit -w web",

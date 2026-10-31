@@ -68,6 +68,15 @@ npm test             # unit then e2e
 
 The daemon keeps an uptime clock, queues coding tasks, streams chat replies, and exposes REST + Server-Sent Events so both clients stay in sync.
 
+## Pricing (Stripe) + macOS download
+
+- **Pay:** [/pricing](http://localhost:3000/pricing) — Stripe Checkout (or demo mode without keys)
+- **Backend:** `POST /api/billing/checkout`, `POST /api/billing/webhook`, license entitlements
+- **Download:** [/download](http://localhost:3000/download) — Pro license unlocks `MacCodingAgent-macOS.zip`
+- **Build Mac package:** `npm run pack:macos`
+
+Set `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, and optionally `STRIPE_WEBHOOK_SECRET` / price IDs for live charges.
+
 ## Deploy on Vercel
 
 The web app includes hosted `/api/*` routes so it runs on Vercel without a separate Mac daemon (stub model for the preview). Local `npm run dev` still uses the 24/7 agent on `:8787`.

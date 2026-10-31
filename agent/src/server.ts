@@ -2,6 +2,17 @@ import cors from "cors";
 import express, { type Express, type Request, type Response } from "express";
 import { z } from "zod";
 import type { AgentService } from "./agent-service.js";
+import {
+  applyStripeEvent,
+  createCheckoutSession,
+  entitlementsFor,
+  finalizeCheckoutSession,
+  loadBillingConfig,
+  plans,
+  verifyStripeWebhook,
+  type BillingStore,
+  type PlanId,
+} from "./billing.js";
 
 const chatSchema = z.object({
   content: z.string().min(1).max(20_000),
@@ -17,13 +28,61 @@ const modelSchema = z.object({
   modelId: z.string().min(1).max(120),
 });
 
-export function createServer(agent: AgentService): Express {
+const checkoutSchema = z.object({
+  email: z.string().email(),
+  plan: z.enum(["pro_monthly", "pro_lifetime"]),
+});
+
+export function createServer(
+  agent: AgentService,
+  billing?: BillingStore,
+): Express {
   const app = express();
   app.use(cors());
+
+  const billingConfig = loadBillingConfig(process.env, agent.config.dataDir);
+
+  app.post(
+    "/api/billing/webhook",
+    express.raw({ type: "application/json" }),
+    async (req, res) => {
+      if (!billing) {
+        res.status(503).json({ error: "Billing store unavailable" });
+        return;
+      }
+      const rawBody = Buffer.isBuffer(req.body)
+        ? req.body.toString("utf8")
+        : typeof req.body === "string"
+          ? req.body
+          : JSON.stringify(req.body ?? {});
+      const signature = req.header("stripe-signature") ?? undefined;
+      if (!verifyStripeWebhook(billingConfig, rawBody, signature)) {
+        res.status(400).json({ error: "Invalid Stripe signature" });
+        return;
+      }
+      try {
+        const event = JSON.parse(rawBody) as {
+          type: string;
+          data?: { object?: Record<string, unknown> };
+        };
+        const license = await applyStripeEvent(billing, event);
+        res.json({ received: true, licenseKey: license?.licenseKey ?? null });
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "Webhook handling failed";
+        res.status(400).json({ error: message });
+      }
+    },
+  );
+
   app.use(express.json({ limit: "1mb" }));
 
   app.get("/api/health", (_req, res) => {
-    res.json(agent.health());
+    res.json({
+      ...agent.health(),
+      billingConfigured: Boolean(billingConfig.secretKey),
+      plans: plans().map((p) => p.id),
+    });
   });
 
   app.get("/api/models", async (_req, res) => {
@@ -93,6 +152,87 @@ export function createServer(agent: AgentService): Express {
     res.json({ projects: agent.store.listProjects() });
   });
 
+  app.get("/api/billing/plans", (_req, res) => {
+    res.json({
+      plans: plans(),
+      publishableKey: billingConfig.publishableKey,
+      stripeConfigured: Boolean(billingConfig.secretKey),
+    });
+  });
+
+  app.post("/api/billing/checkout", async (req, res) => {
+    if (!billing) {
+      res.status(503).json({ error: "Billing store unavailable" });
+      return;
+    }
+    const parsed = checkoutSchema.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: parsed.error.flatten() });
+      return;
+    }
+    try {
+      const result = await createCheckoutSession(billing, billingConfig, {
+        email: parsed.data.email,
+        plan: parsed.data.plan as Exclude<PlanId, "free">,
+      });
+      res.json(result);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Checkout failed";
+      res.status(400).json({ error: message });
+    }
+  });
+
+  app.get("/api/billing/session/:id", async (req, res) => {
+    if (!billing) {
+      res.status(503).json({ error: "Billing store unavailable" });
+      return;
+    }
+    try {
+      const license = await finalizeCheckoutSession(
+        billing,
+        billingConfig,
+        req.params.id,
+      );
+      res.json({
+        license,
+        entitlements: entitlementsFor(license),
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Could not finalize session";
+      res.status(404).json({ error: message });
+    }
+  });
+
+  app.get("/api/billing/license/:key", (req, res) => {
+    if (!billing) {
+      res.status(503).json({ error: "Billing store unavailable" });
+      return;
+    }
+    const license = billing.findByKey(req.params.key);
+    if (!license) {
+      res.status(404).json({ error: "License not found" });
+      return;
+    }
+    res.json({ license, entitlements: entitlementsFor(license) });
+  });
+
+  app.get("/api/billing/entitlements", (req, res) => {
+    if (!billing) {
+      res.status(503).json({ error: "Billing store unavailable" });
+      return;
+    }
+    const licenseKey = String(req.query.license ?? "");
+    const email = String(req.query.email ?? "");
+    const license = licenseKey
+      ? billing.findByKey(licenseKey)
+      : email
+        ? billing.findByEmail(email)
+        : null;
+    res.json(entitlementsFor(license ?? null));
+  });
+
   app.get("/api/events", (req: Request, res: Response) => {
     res.setHeader("Content-Type", "text/event-stream");
     res.setHeader("Cache-Control", "no-cache");
@@ -110,7 +250,7 @@ export function createServer(agent: AgentService): Express {
   app.get("/", (_req, res) => {
     res.json({
       name: "Mac Coding Agent",
-      docs: "Use /api/health, /api/sessions, /api/models",
+      docs: "Use /api/health, /api/sessions, /api/models, /api/billing",
     });
   });
 

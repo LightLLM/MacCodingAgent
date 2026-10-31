@@ -623,6 +623,106 @@ textarea {
   }
 }
 
+.pay-email {
+  display: grid;
+  gap: 0.45rem;
+  max-width: 420px;
+}
+
+.pay-email label,
+.download-panel label {
+  font-size: 0.85rem;
+  color: var(--steel);
+  font-weight: 600;
+}
+
+.pay-email input,
+.download-row input {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  background: white;
+}
+
+.pricing-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 800px) {
+  .pricing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.pricing-card {
+  padding: 1.35rem 1.4rem;
+  border-radius: var(--radius);
+  background: rgba(247, 249, 251, 0.86);
+  border: 1px solid var(--line);
+}
+
+.pricing-card h2 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+}
+
+.pricing-card .price {
+  margin: 0 0 0.75rem;
+  font-size: 1.6rem;
+  font-family: var(--font-display);
+  color: var(--accent);
+}
+
+.pricing-card ul {
+  margin: 0 0 1.1rem;
+  padding-left: 1.1rem;
+  color: var(--steel);
+  line-height: 1.55;
+}
+
+.download-panel {
+  display: grid;
+  gap: 1rem;
+  max-width: 720px;
+}
+
+.download-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.65rem;
+}
+
+.download-ready {
+  padding: 1.1rem 1.2rem;
+  border-radius: var(--radius);
+  background: rgba(18, 163, 148, 0.1);
+  border: 1px solid rgba(18, 163, 148, 0.25);
+  display: grid;
+  gap: 0.85rem;
+}
+
+.download-ready ol {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.download-hint {
+  color: var(--steel);
+}
+
+.download-hint a {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.download-sysreq {
+  margin: 0;
+}
+
 .iphone-stage {
   width: min(var(--max), calc(100% - 2rem));
   margin: 0 auto;

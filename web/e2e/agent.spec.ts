@@ -52,4 +52,23 @@ test.describe("Mac Coding Agent web app", () => {
       timeout: 15_000,
     });
   });
+
+  test("Stripe pricing checkout issues demo license and unlocks Mac download", async ({
+    page,
+  }) => {
+    await page.goto("/pricing");
+    await expect(page.getByTestId("pricing-grid")).toBeVisible({ timeout: 15_000 });
+    await page.getByTestId("billing-email").fill("buyer@example.com");
+    await page.getByTestId("checkout-pro_lifetime").click();
+    await expect(page.getByTestId("payment-success")).toBeVisible({ timeout: 20_000 });
+    await expect(page.getByTestId("issued-license")).toContainText(/MCA-/);
+    const license = (await page.getByTestId("issued-license").textContent())?.trim();
+    expect(license).toMatch(/^MCA-/);
+
+    await page.goto("/download");
+    await page.getByTestId("license-input").fill(license!);
+    await page.getByRole("button", { name: "Verify" }).click();
+    await expect(page.getByTestId("download-ready")).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByTestId("macos-download-link")).toBeVisible();
+  });
 });

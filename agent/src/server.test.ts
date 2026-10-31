@@ -71,3 +71,25 @@ describe("Mac Coding Agent API", () => {
     expect(chat.status).toBe(400);
   });
 });
+
+describe("Mac Coding Agent billing API", () => {
+  it("creates demo Stripe checkout via backend", async () => {
+    const { BillingStore } = await import("./billing.js");
+    const dir = await mkdtemp(path.join(os.tmpdir(), "mca-bill-api-"));
+    tempDirs.push(dir);
+    const billing = new BillingStore(dir);
+    await billing.load();
+    const app = createServer(agent, billing);
+
+    const plans = await request(app).get("/api/billing/plans");
+    expect(plans.status).toBe(200);
+    expect(plans.body.plans.length).toBeGreaterThan(0);
+
+    const checkout = await request(app)
+      .post("/api/billing/checkout")
+      .send({ email: "mac@example.com", plan: "pro_monthly" });
+    expect(checkout.status).toBe(200);
+    expect(checkout.body.mode).toBe("demo");
+    expect(checkout.body.url).toContain("/billing/success");
+  });
+});

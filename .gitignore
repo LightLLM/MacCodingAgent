@@ -20,3 +20,5 @@ xcuserdata/
 *.xcuserstate
 DerivedData/
 .vercel
+macos/dist/
+web/.data/
