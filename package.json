@@ -1,0 +1,25 @@
+{
+  "name": "mac-coding-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "24/7 Mac OS coding agent powered by open-source and local models",
+  "workspaces": [
+    "agent",
+    "web"
+  ],
+  "scripts": {
+    "dev": "concurrently -n agent,web -c teal,blue \"npm run dev -w agent\" \"npm run dev -w web\"",
+    "build": "npm run build -w agent && npm run build -w web",
+    "start": "concurrently -n agent,web -c teal,blue \"npm run start -w agent\" \"npm run start -w web\"",
+    "test": "npm run test -w agent && npm run test -w web",
+    "test:unit": "npm run test:unit -w agent && npm run test:unit -w web",
+    "test:e2e": "npm run test:e2e -w web",
+    "lint": "npm run lint -w agent && npm run lint -w web"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
