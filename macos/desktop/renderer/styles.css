@@ -1,0 +1,275 @@
+:root {
+  --ink: #10141c;
+  --steel: #5d6b7c;
+  --paper: #edf1f5;
+  --foam: #f7f9fb;
+  --line: rgba(16, 20, 28, 0.12);
+  --accent: #0b7a6e;
+  --accent-soft: rgba(18, 163, 148, 0.14);
+  --font-display: "Syne", sans-serif;
+  --font-body: "Manrope", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background:
+    radial-gradient(900px 500px at 0% 0%, rgba(18, 163, 148, 0.16), transparent 55%),
+    linear-gradient(180deg, var(--paper), #d7e0ea);
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  height: 100vh;
+}
+
+.rail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.25rem 1rem;
+  border-right: 1px solid var(--line);
+  background: rgba(247, 249, 251, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.brand {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.brand strong {
+  display: block;
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+}
+
+.brand small {
+  color: var(--steel);
+}
+
+.mark {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.65rem;
+  background: linear-gradient(145deg, #16343a, #0b7a6e 55%, #7ee0d2);
+}
+
+.rail nav {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.rail nav button,
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 0.95rem;
+  background: transparent;
+  color: var(--steel);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.rail nav button.active,
+.rail nav button:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.status {
+  margin-top: auto;
+  padding: 0.55rem 0.75rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+main {
+  overflow: auto;
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+
+.top h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  letter-spacing: -0.04em;
+  font-size: 2rem;
+}
+
+.top p {
+  margin: 0.3rem 0 0;
+  color: var(--steel);
+}
+
+.btn.solid,
+#newSession {
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 0.85rem;
+  min-height: calc(100vh - 140px);
+}
+
+.sessions,
+.chat,
+.cards .card,
+.about {
+  background: rgba(247, 249, 251, 0.86);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+
+.sessions {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+  overflow: auto;
+}
+
+.sessions button {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  border-radius: 12px;
+  padding: 0.75rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.sessions button[data-active="true"],
+.sessions button:hover {
+  background: var(--accent-soft);
+}
+
+.sessions strong {
+  display: block;
+}
+
+.sessions span {
+  color: var(--steel);
+  font-size: 0.78rem;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.messages {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.bubble {
+  max-width: 85%;
+  padding: 0.8rem 1rem;
+  border-radius: 16px;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+.bubble.user {
+  align-self: flex-end;
+  background: var(--ink);
+  color: #f4f8fb;
+}
+
+.bubble.assistant {
+  align-self: flex-start;
+  background: white;
+  border: 1px solid var(--line);
+}
+
+.composer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.65rem;
+  padding: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+textarea {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.8rem;
+  font: inherit;
+  resize: vertical;
+}
+
+.cards {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.card {
+  padding: 1rem 1.1rem;
+}
+
+.card h3 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-display);
+}
+
+.card p {
+  margin: 0;
+  color: var(--steel);
+}
+
+.about {
+  padding: 1.2rem;
+  max-width: 720px;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  background: #132029;
+  color: #d7efe9;
+  padding: 1rem;
+  border-radius: 14px;
+  white-space: pre-wrap;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.empty {
+  color: var(--steel);
+  text-align: center;
+  padding: 2rem 1rem;
+}

@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "cursor/**"]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-build:
+    name: Lint & production build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: node scripts/sync-billing.mjs check
+      - run: npm run lint
+      - run: npm run pack:macos
+      - run: npm run build -w @mac-coding-agent/agent
+      - run: MCA_USE_HOSTED_API=1 npm run build -w @mac-coding-agent/web
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-installer-zip
+          path: web/public/downloads/MacCodingAgent-macOS-latest.zip
+
+  unit:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ["20", "22"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: node scripts/sync-billing.mjs check
+      - run: npm run test:unit
+      - run: npm run test:macos:unit
+
+  e2e-web:
+    name: Web e2e
+    runs-on: ubuntu-latest
+    needs: [unit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run pack:macos
+      - run: npx playwright install chromium --with-deps
+        working-directory: web
+      - run: npm run test:e2e
+        env:
+          MCA_MODEL_PROVIDER: stub
+          MCA_APP_URL: http://127.0.0.1:3000
+          CI: true
+
+  macos-desktop-e2e:
+    name: macOS desktop e2e (real macOS)
+    runs-on: macos-latest
+    needs: [unit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run macOS desktop end-to-end proof
+        run: |
+          chmod +x macos/scripts/macos-e2e.sh
+          ./macos/scripts/macos-e2e.sh
+      - name: Upload macOS proof artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-desktop-e2e-proof
+          path: docs/proof/**
+
+  production-gate:
+    name: Production gate
+    runs-on: ubuntu-latest
+    needs: [lint-build, unit, e2e-web, macos-desktop-e2e]
+    steps:
+      - run: echo "All production gates passed"

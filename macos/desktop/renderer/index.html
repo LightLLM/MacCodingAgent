@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src 'self' http://127.0.0.1:* http://localhost:*; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:;"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mac Coding Agent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;600;700&family=Syne:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="rail">
+        <div class="brand">
+          <span class="mark" aria-hidden="true"></span>
+          <div>
+            <strong>Mac Coding Agent</strong>
+            <small>Local · Mac Mini</small>
+          </div>
+        </div>
+        <nav>
+          <button type="button" data-view="agent" class="active">Agent</button>
+          <button type="button" data-view="models">Models</button>
+          <button type="button" data-view="about">About</button>
+        </nav>
+        <div class="status" id="statusPill">Connecting…</div>
+      </aside>
+
+      <main>
+        <section id="view-agent" class="view">
+          <header class="top">
+            <div>
+              <h1>Agent</h1>
+              <p>24/7 local coding loop on this Mac</p>
+            </div>
+            <button type="button" id="newSession" class="btn">New session</button>
+          </header>
+          <div class="workspace">
+            <ul id="sessions" class="sessions"></ul>
+            <div class="chat">
+              <div id="messages" class="messages"></div>
+              <form id="composer" class="composer">
+                <textarea
+                  id="prompt"
+                  rows="3"
+                  placeholder="Describe a coding task…"
+                ></textarea>
+                <button class="btn solid" type="submit">Send</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-models" class="view hidden">
+          <header class="top">
+            <div>
+              <h1>Models</h1>
+              <p>Local stub models (Ollama-ready later)</p>
+            </div>
+          </header>
+          <div id="models" class="cards"></div>
+        </section>
+
+        <section id="view-about" class="view hidden">
+          <header class="top">
+            <div>
+              <h1>About</h1>
+              <p>Installed locally on macOS</p>
+            </div>
+          </header>
+          <div class="about">
+            <p>
+              This desktop build runs an embedded Mac Coding Agent API on
+              localhost and keeps sessions on your Mac Mini. No cloud required
+              for the stub model.
+            </p>
+            <pre id="aboutMeta" class="mono"></pre>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="./app.js"></script>
+  </body>
+</html>

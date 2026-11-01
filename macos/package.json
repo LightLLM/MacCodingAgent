@@ -1,0 +1,14 @@
+{
+  "name": "@mac-coding-agent/macos",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mac Coding Agent desktop shell for macOS",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack:dir": "node scripts/package-macos.js"
+  },
+  "dependencies": {
+    "electron": "^35.0.0"
+  }
+}
