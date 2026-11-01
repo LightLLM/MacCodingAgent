@@ -1,1 +1,1 @@
-{"name":"Mac Coding Agent","version":"1.0.0","status":"running","uptimeSeconds":0,"startedAt":"2026-11-01T03:54:50.780Z","modelProvider":"stub","activeModel":"stub-coder","sessions":0,"tasksQueued":0,"tasksRunning":0,"localModelsReachable":true,"desktop":true,"platform":"linux"}
+{"name":"Mac Coding Agent","version":"1.0.0","status":"running","uptimeSeconds":0,"startedAt":"2026-11-01T03:55:14.852Z","modelProvider":"stub","activeModel":"stub-coder","sessions":0,"tasksQueued":0,"tasksRunning":0,"localModelsReachable":true,"desktop":true,"platform":"darwin"}

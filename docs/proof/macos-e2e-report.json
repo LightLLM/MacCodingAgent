@@ -1,15 +1,15 @@
 {
   "ok": true,
-  "platform": "linux",
-  "arch": "x64",
-  "electronLaunch": false,
-  "electronNote": "Not Darwin — API/package proof only",
+  "platform": "darwin",
+  "arch": "arm64",
+  "electronLaunch": true,
+  "electronNote": "Electron launched on Darwin; /api/health OK",
   "health": {
     "name": "Mac Coding Agent",
     "version": "1.0.0",
     "status": "running",
     "uptimeSeconds": 0,
-    "startedAt": "2026-11-01T03:54:50.780Z",
+    "startedAt": "2026-11-01T03:55:14.852Z",
     "modelProvider": "stub",
     "activeModel": "stub-coder",
     "sessions": 0,
@@ -17,8 +17,8 @@
     "tasksRunning": 0,
     "localModelsReachable": true,
     "desktop": true,
-    "platform": "linux"
+    "platform": "darwin"
   },
   "chatPreview": "Hello from Mac Coding Agent on macOS. Ask me to scaffold, refactor, or debug using your local/open-source models.",
-  "timestamp": "2026-11-01T03:54:51.096Z"
+  "timestamp": "2026-11-01T03:55:27.941Z"
 }

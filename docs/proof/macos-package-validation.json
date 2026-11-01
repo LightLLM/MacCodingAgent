@@ -1,7 +1,7 @@
 {
   "ok": true,
-  "platform": "linux",
-  "arch": "x64",
+  "platform": "darwin",
+  "arch": "arm64",
   "zipBytes": 14708,
   "files": 13,
   "checks": [
