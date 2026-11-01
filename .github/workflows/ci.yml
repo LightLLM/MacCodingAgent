@@ -16,9 +16,36 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run test:unit
+      - run: npm run test:macos:unit
       - run: npx playwright install chromium --with-deps
         working-directory: web
       - run: npm run test:e2e
         env:
           MCA_MODEL_PROVIDER: stub
           CI: true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macos-package-proof-linux
+          path: docs/proof/**
+
+  macos-desktop-e2e:
+    name: macOS desktop e2e (real macOS)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run macOS desktop end-to-end proof
+        run: |
+          chmod +x macos/scripts/macos-e2e.sh
+          ./macos/scripts/macos-e2e.sh
+      - name: Upload macOS proof artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-desktop-e2e-proof
+          path: |
+            docs/proof/**
+            macos/desktop/*.test.js
