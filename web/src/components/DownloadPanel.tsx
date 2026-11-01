@@ -37,9 +37,6 @@ export function DownloadPanel() {
       if (data.licenseKey) {
         window.localStorage.setItem("mca.license", data.licenseKey);
       }
-      if (!data.macDownloadUnlocked) {
-        setError("This license does not unlock the macOS download yet. Purchase Pro first.");
-      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not verify license");
     } finally {
@@ -53,14 +50,49 @@ export function DownloadPanel() {
         <div>
           <h1>Download for macOS</h1>
           <p>
-            Install Mac Coding Agent on your Mac — the desktop shell runs the
-            24/7 agent locally and opens the dashboard.
+            Install Mac Coding Agent on your Mac Mini — desktop app with a local
+            embedded agent for the latest macOS.
           </p>
         </div>
       </div>
 
       <div className="download-panel">
-        <label htmlFor="license-key">Pro license key</label>
+        <div className="download-ready" data-testid="download-ready">
+          <p>
+            <strong>Mac Coding Agent for Mac Mini / macOS 13+</strong>
+            <br />
+            Includes Apple Silicon + Intel runtimes, Installer, and local agent.
+          </p>
+          <a
+            className="btn btn-solid"
+            href="/downloads/MacCodingAgent-macOS-latest.zip"
+            download
+            data-testid="macos-download-link"
+          >
+            Download macOS app (latest)
+          </a>
+          <ol>
+            <li>Unzip <code>MacCodingAgent-macOS-latest.zip</code></li>
+            <li>
+              Double-click <code>Install Mac Coding Agent.command</code>
+            </li>
+            <li>
+              If macOS blocks it: right-click → Open → Open (Gatekeeper)
+            </li>
+            <li>App installs to <code>/Applications</code> and launches</li>
+          </ol>
+        </div>
+
+        <div className="mono-panel download-sysreq">
+{`Mac Mini install notes
+• macOS 13 Ventura or later (Sonoma / Sequoia OK)
+• Apple Silicon (M1–M4) or Intel
+• First launch may need right-click → Open
+• Embedded agent listens on localhost — works offline
+• Optional: install Ollama for open-source models`}
+        </div>
+
+        <label htmlFor="license-key">Optional Pro license</label>
         <div className="download-row">
           <input
             id="license-key"
@@ -78,46 +110,21 @@ export function DownloadPanel() {
             {checking ? "Checking…" : "Verify"}
           </button>
         </div>
-
         {error ? (
           <div className="error-banner" role="alert">
             {error}
           </div>
         ) : null}
-
-        {entitlements?.macDownloadUnlocked ? (
-          <div className="download-ready" data-testid="download-ready">
-            <p>
-              License <strong>{entitlements.licenseKey}</strong> unlocks macOS
-              download ({entitlements.plan}).
-            </p>
-            <a
-              className="btn btn-solid"
-              href="/downloads/MacCodingAgent-macOS.zip"
-              download
-              data-testid="macos-download-link"
-            >
-              Download macOS app
-            </a>
-            <ol>
-              <li>Unzip <code>MacCodingAgent-macOS.zip</code></li>
-              <li>Open <code>Mac Coding Agent.app</code> (or run <code>./start-mac-coding-agent.sh</code>)</li>
-              <li>Enter your license key in Settings if prompted</li>
-            </ol>
-          </div>
+        {entitlements?.pro ? (
+          <p className="download-hint">
+            Pro active for {entitlements.email ?? "this license"} (
+            {entitlements.plan}).
+          </p>
         ) : (
           <p className="download-hint">
-            Need a license? <a href="/pricing">Pay with Stripe</a> to unlock the
-            Mac download.
+            Want Pro billing sync? <a href="/pricing">Pay with Stripe</a>.
           </p>
         )}
-
-        <div className="mono-panel download-sysreq">
-{`Requirements
-• macOS 13 Ventura or later (Apple Silicon or Intel)
-• Node.js 20+ (bundled launcher can use system Node)
-• Optional: Ollama or LM Studio for local models`}
-        </div>
       </div>
     </div>
   );

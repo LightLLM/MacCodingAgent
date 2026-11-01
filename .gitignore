@@ -21,4 +21,6 @@ xcuserdata/
 DerivedData/
 .vercel
 macos/dist/
+macos/dist-release/
+macos/.cache/
 web/.data/

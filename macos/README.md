@@ -1,21 +1,28 @@
 # Mac Coding Agent — macOS apps
 
-Two Mac clients ship with this repo:
-
-## 1. Desktop shell (Electron) — downloadable zip
+## Download for Mac Mini (latest)
 
 ```bash
 npm run pack:macos
 ```
 
-Creates `web/public/downloads/MacCodingAgent-macOS.zip` with `Mac Coding Agent.app`.
+Creates `web/public/downloads/MacCodingAgent-macOS-latest.zip` containing:
 
-Pro licenses from Stripe unlock the download page in the web app.
+- `Mac Coding Agent.app` (Apple Silicon + Intel Electron runtimes)
+- `Install Mac Coding Agent.command` (installs to `/Applications`)
+- `README-INSTALL-MAC-MINI.txt`
 
-## 2. Native SwiftUI Mac app
+### Install on Mac Mini
 
-Open `macos/MacApp/MacCodingAgentMac/` sources in Xcode (create an App target named **Mac Coding Agent**), then run on macOS 13+.
+1. Download / unzip `MacCodingAgent-macOS-latest.zip`
+2. Double-click **Install Mac Coding Agent.command**
+3. If Gatekeeper warns: right-click → **Open** → **Open**
+4. App opens from `/Applications` with a local embedded agent
+
+## Native SwiftUI Mac app
+
+Sources in `macos/MacApp/MacCodingAgentMac/` for Xcode on macOS 13+.
 
 ## Stripe + backend
 
-Checkout hits `/api/billing/checkout` on the agent (or Vercel hosted `/api/billing/*`). Webhooks: `POST /api/billing/webhook`.
+Checkout: `/api/billing/checkout`. Webhooks: `POST /api/billing/webhook`.

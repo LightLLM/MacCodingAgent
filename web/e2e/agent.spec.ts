@@ -66,9 +66,13 @@ test.describe("Mac Coding Agent web app", () => {
     expect(license).toMatch(/^MCA1\./);
 
     await page.goto("/download");
-    await page.getByTestId("license-input").fill(license!);
-    await page.getByRole("button", { name: "Verify" }).click();
     await expect(page.getByTestId("download-ready")).toBeVisible({ timeout: 15_000 });
     await expect(page.getByTestId("macos-download-link")).toBeVisible();
+    await expect(page.getByTestId("macos-download-link")).toHaveAttribute(
+      "href",
+      /MacCodingAgent-macOS-latest\.zip/,
+    );
+    await page.getByTestId("license-input").fill(license!);
+    await page.getByRole("button", { name: "Verify" }).click();
   });
 });

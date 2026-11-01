@@ -1,0 +1,8 @@
+{
+  "name": "mac-coding-agent-desktop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mac Coding Agent desktop app for macOS",
+  "main": "main.js",
+  "productName": "Mac Coding Agent"
+}
