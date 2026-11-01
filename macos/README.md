@@ -1,28 +1,38 @@
-# Mac Coding Agent — macOS apps
+# Mac Coding Agent — macOS
 
-## Download for Mac Mini (latest)
+## Install on Mac Mini / macOS
+
+1. Download [`../web/public/downloads/MacCodingAgent-macOS-latest.zip`](../web/public/downloads/MacCodingAgent-macOS-latest.zip)
+2. Unzip
+3. Double-click **`Install Mac Coding Agent.command`**
+4. If Gatekeeper warns: right-click → **Open** → **Open**
+5. App installs to `/Applications` and launches  
+   (first launch downloads Electron for your chip)
+
+See the root [README](../README.md#install-on-macos-mac-mini) for full steps.
+
+## Build the zip
 
 ```bash
 npm run pack:macos
 ```
 
-Creates `web/public/downloads/MacCodingAgent-macOS-latest.zip` containing:
+Creates `web/public/downloads/MacCodingAgent-macOS-latest.zip` with:
 
-- `Mac Coding Agent.app` (Apple Silicon + Intel Electron runtimes)
-- `Install Mac Coding Agent.command` (installs to `/Applications`)
+- `Mac Coding Agent.app`
+- `Install Mac Coding Agent.command`
+- `Open Without Installing.command`
 - `README-INSTALL-MAC-MINI.txt`
 
-### Install on Mac Mini
+## Tests / proof
 
-1. Download / unzip `MacCodingAgent-macOS-latest.zip`
-2. Double-click **Install Mac Coding Agent.command**
-3. If Gatekeeper warns: right-click → **Open** → **Open**
-4. App opens from `/Applications` with a local embedded agent
+```bash
+npm run test:macos:unit
+npm run test:macos:e2e
+```
 
-## Native SwiftUI Mac app
+Real Darwin CI artifacts: [`../docs/proof/`](../docs/proof/)
 
-Sources in `macos/MacApp/MacCodingAgentMac/` for Xcode on macOS 13+.
+## Native SwiftUI shell
 
-## Stripe + backend
-
-Checkout: `/api/billing/checkout`. Webhooks: `POST /api/billing/webhook`.
+Sources in `MacApp/MacCodingAgentMac/` for Xcode on macOS 13+.
