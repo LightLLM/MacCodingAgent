@@ -110,14 +110,25 @@ function send(res, status, body) {
   res.end(payload);
 }
 
-async function readJson(req) {
+async function readJson(req, limitBytes = 1_000_000) {
   const chunks = [];
-  for await (const chunk of req) chunks.push(chunk);
+  let size = 0;
+  for await (const chunk of req) {
+    size += chunk.length;
+    if (size > limitBytes) {
+      const err = new Error("Payload too large");
+      err.statusCode = 413;
+      throw err;
+    }
+    chunks.push(chunk);
+  }
   if (!chunks.length) return {};
   try {
     return JSON.parse(Buffer.concat(chunks).toString("utf8"));
   } catch {
-    return {};
+    const err = new Error("Invalid JSON body");
+    err.statusCode = 400;
+    throw err;
   }
 }
 
@@ -257,7 +268,11 @@ function createServer(port = 8787) {
 
       send(res, 404, { error: "Not found" });
     } catch (error) {
-      send(res, 500, {
+      const status =
+        error && typeof error === "object" && "statusCode" in error
+          ? Number(error.statusCode) || 500
+          : 500;
+      send(res, status, {
         error: error instanceof Error ? error.message : "Server error",
       });
     }

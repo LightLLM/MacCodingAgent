@@ -13,6 +13,12 @@ import {
   type BillingStore,
   type PlanId,
 } from "./billing.js";
+import {
+  errorHandler,
+  notFound,
+  rateLimit,
+  requestId,
+} from "./middleware.js";
 
 const chatSchema = z.object({
   content: z.string().min(1).max(20_000),
@@ -38,7 +44,13 @@ export function createServer(
   billing?: BillingStore,
 ): Express {
   const app = express();
-  app.use(cors());
+  app.disable("x-powered-by");
+  app.use(requestId);
+  app.use(
+    cors({
+      origin: process.env.MCA_CORS_ORIGIN?.split(",").map((s) => s.trim()) ?? true,
+    }),
+  );
 
   const billingConfig = loadBillingConfig(process.env, agent.config.dataDir);
 
@@ -127,22 +139,26 @@ export function createServer(
     res.json({ session });
   });
 
-  app.post("/api/sessions/:id/chat", async (req, res) => {
-    const parsed = chatSchema.safeParse(req.body);
-    if (!parsed.success) {
-      res.status(400).json({ error: parsed.error.flatten() });
-      return;
-    }
-    try {
-      const result = await agent.chat(req.params.id, parsed.data.content);
-      const session = agent.store.getSession(req.params.id);
-      res.json({ ...result, session });
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Chat failed";
-      const status = message === "Session not found" ? 404 : 500;
-      res.status(status).json({ error: message });
-    }
-  });
+  app.post(
+    "/api/sessions/:id/chat",
+    rateLimit({ windowMs: 60_000, max: 60 }),
+    async (req, res) => {
+      const parsed = chatSchema.safeParse(req.body);
+      if (!parsed.success) {
+        res.status(400).json({ error: parsed.error.flatten() });
+        return;
+      }
+      try {
+        const result = await agent.chat(req.params.id, parsed.data.content);
+        const session = agent.store.getSession(req.params.id);
+        res.json({ ...result, session });
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Chat failed";
+        const status = message === "Session not found" ? 404 : 500;
+        res.status(status).json({ error: message });
+      }
+    },
+  );
 
   app.get("/api/tasks", (_req, res) => {
     res.json({ tasks: agent.store.listTasks() });
@@ -160,28 +176,32 @@ export function createServer(
     });
   });
 
-  app.post("/api/billing/checkout", async (req, res) => {
-    if (!billing) {
-      res.status(503).json({ error: "Billing store unavailable" });
-      return;
-    }
-    const parsed = checkoutSchema.safeParse(req.body);
-    if (!parsed.success) {
-      res.status(400).json({ error: parsed.error.flatten() });
-      return;
-    }
-    try {
-      const result = await createCheckoutSession(billing, billingConfig, {
-        email: parsed.data.email,
-        plan: parsed.data.plan as Exclude<PlanId, "free">,
-      });
-      res.json(result);
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Checkout failed";
-      res.status(400).json({ error: message });
-    }
-  });
+  app.post(
+    "/api/billing/checkout",
+    rateLimit({ windowMs: 60_000, max: 20 }),
+    async (req, res) => {
+      if (!billing) {
+        res.status(503).json({ error: "Billing store unavailable" });
+        return;
+      }
+      const parsed = checkoutSchema.safeParse(req.body);
+      if (!parsed.success) {
+        res.status(400).json({ error: parsed.error.flatten() });
+        return;
+      }
+      try {
+        const result = await createCheckoutSession(billing, billingConfig, {
+          email: parsed.data.email,
+          plan: parsed.data.plan as Exclude<PlanId, "free">,
+        });
+        res.json(result);
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "Checkout failed";
+        res.status(400).json({ error: message });
+      }
+    },
+  );
 
   app.get("/api/billing/session/:id", async (req, res) => {
     if (!billing) {
@@ -253,6 +273,9 @@ export function createServer(
       docs: "Use /api/health, /api/sessions, /api/models, /api/billing",
     });
   });
+
+  app.use(notFound);
+  app.use(errorHandler);
 
   return app;
 }

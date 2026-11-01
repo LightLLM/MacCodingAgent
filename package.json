@@ -14,12 +14,15 @@
     "pack:macos": "node macos/scripts/package-macos-release.js",
     "pack:macos:lite": "node macos/scripts/package-macos.js",
     "start": "concurrently -n agent,web -c teal,blue \"npm run start -w agent\" \"npm run start -w web\"",
-    "test": "npm run test -w agent && npm run test -w web",
+    "test": "npm run test:unit && npm run test:macos:unit && npm run test:e2e",
     "test:unit": "npm run test:unit -w agent && npm run test:unit -w web",
     "test:macos:unit": "node macos/desktop/server.unit.test.js && node macos/scripts/validate-macos-package.js",
     "test:macos:e2e": "bash macos/scripts/macos-e2e.sh",
     "test:e2e": "npm run test:e2e -w web",
-    "lint": "npm run lint -w agent && npm run lint -w web"
+    "lint": "npm run lint -w agent && npm run lint -w web",
+    "sync:billing": "node scripts/sync-billing.mjs sync",
+    "check:billing": "node scripts/sync-billing.mjs check",
+    "ci:local": "npm run check:billing && npm run lint && npm run test:unit && npm run test:macos:unit && npm run pack:macos && MCA_USE_HOSTED_API=1 npm run build -w @mac-coding-agent/web"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

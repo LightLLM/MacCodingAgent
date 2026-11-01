@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
+import { isEmail } from "@/lib/safe";
 
 interface Plan {
   id: "pro_monthly" | "pro_lifetime";
@@ -29,8 +30,8 @@ export function PricingPanel() {
 
   async function startCheckout(plan: Plan["id"]) {
     setError(null);
-    if (!email.trim().includes("@")) {
-      setError("Enter the email Stripe should receipt.");
+    if (!isEmail(email)) {
+      setError("Enter a valid email for the Stripe receipt.");
       return;
     }
     setBusyPlan(plan);

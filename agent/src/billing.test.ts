@@ -91,4 +91,15 @@ describe("billing", () => {
     expect(resolved?.email).toBe("stateless@example.com");
     expect(entitlementsFor(resolved!).macDownloadUnlocked).toBe(true);
   });
+
+  it("rejects forged signatures", async () => {
+    const { config } = await tempBilling();
+    const { mintSignedLicense, verifySignedLicense } = await import("./billing.js");
+    const good = mintSignedLicense(config, {
+      email: "forge@example.com",
+      plan: "pro_lifetime",
+    });
+    const forged = good.licenseKey.replace(/\.[^.]+$/, ".AAAAAAAAAAAAAAAAaaaaaa");
+    expect(verifySignedLicense(forged, config)).toBeUndefined();
+  });
 });

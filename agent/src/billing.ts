@@ -43,7 +43,9 @@ function emptyState(): BillingState {
   return { licenses: [] };
 }
 
-function resolveAppUrl(env: NodeJS.ProcessEnv): string {
+type EnvMap = Record<string, string | undefined>;
+
+function resolveAppUrl(env: EnvMap): string {
   if (env.MCA_APP_URL) return env.MCA_APP_URL;
   if (env.NEXT_PUBLIC_APP_URL) return env.NEXT_PUBLIC_APP_URL;
   if (env.VERCEL_URL) return `https://${env.VERCEL_URL}`;
@@ -51,7 +53,7 @@ function resolveAppUrl(env: NodeJS.ProcessEnv): string {
 }
 
 export function loadBillingConfig(
-  env: NodeJS.ProcessEnv = process.env,
+  env: EnvMap = process.env,
   dataDir: string,
 ): BillingConfig {
   return {
@@ -202,15 +204,13 @@ export function verifySignedLicense(
     .replace(/\//g, "_")
     .replace(/=+$/g, "")
     .slice(0, 24);
-  try {
-    if (
-      !timingSafeEqual(Buffer.from(expected), Buffer.from(sig)) &&
-      expected !== sig
-    ) {
-      return undefined;
-    }
-  } catch {
-    if (expected !== sig) return undefined;
+  const expectedBuf = Buffer.from(expected);
+  const sigBuf = Buffer.from(sig);
+  if (
+    expectedBuf.length !== sigBuf.length ||
+    !timingSafeEqual(expectedBuf, sigBuf)
+  ) {
+    return undefined;
   }
   try {
     const payload = JSON.parse(fromB64url(body)) as {

@@ -106,16 +106,23 @@ Set `STRIPE_SECRET_KEY` and `STRIPE_PUBLISHABLE_KEY` for live charges (demo mode
 
 Open `ios/MacCodingAgent/MacCodingAgent.xcodeproj` in Xcode, set the agent URL to your Mac (`http://<mac-lan-ip>:8787`), then run.
 
-## Tests
+## Tests & production gates
 
 ```bash
+npm run ci:local          # billing sync + lint + unit + macOS package + web build
 npm run test:unit         # agent + web unit tests
 npm run test:macos:unit   # desktop server + .app package validation
 npm run test:macos:e2e    # unpack zip, health + chat; Electron on Darwin
 npm run test:e2e          # Playwright web e2e
 ```
 
-GitHub Actions runs **macOS desktop e2e (real macOS)** on `macos-latest` and uploads proof artifacts.
+CI (`.github/workflows/ci.yml`) enforces:
+
+1. Lint + production builds (agent + Next.js)
+2. Unit tests on Node 20 and 22
+3. Web Playwright e2e
+4. Real macOS desktop e2e on `macos-latest`
+5. Final **Production gate** job (all must pass)
 
 ### Latest Darwin proof (CI)
 

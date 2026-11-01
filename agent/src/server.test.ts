@@ -92,4 +92,11 @@ describe("Mac Coding Agent billing API", () => {
     expect(checkout.body.mode).toBe("demo");
     expect(checkout.body.url).toContain("/billing/success");
   });
+
+  it("returns 404 for unknown routes with stable shape", async () => {
+    const app = createServer(agent);
+    const res = await request(app).get("/api/does-not-exist");
+    expect(res.status).toBe(404);
+    expect(res.body.code).toBe("not_found");
+  });
 });
