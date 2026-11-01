@@ -10,9 +10,9 @@ export async function GET(
   context: { params: Promise<{ key: string }> },
 ) {
   const { key } = await context.params;
-  const { store, ready } = getBillingRuntime();
+  const { store, ready, config } = getBillingRuntime();
   await ready;
-  const license = store.findByKey(key);
+  const license = store.resolveLicense(key, config);
   if (!license) {
     return NextResponse.json({ error: "License not found" }, { status: 404 });
   }

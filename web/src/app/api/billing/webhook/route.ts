@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       type: string;
       data?: { object?: Record<string, unknown> };
     };
-    const license = await applyStripeEvent(store, event);
+    const license = await applyStripeEvent(store, event, config);
     return NextResponse.json({
       received: true,
       licenseKey: license?.licenseKey ?? null,

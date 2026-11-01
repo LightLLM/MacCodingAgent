@@ -40,7 +40,14 @@ export function BillingSuccess() {
       }
     }
 
-    void load();
+    void load().catch(() => {
+      // Ensure demo licenses from the URL still surface if hydration hiccups.
+      if (demoLicense) {
+        setLicense(demoLicense);
+        setEmail(demoEmail);
+        setLoading(false);
+      }
+    });
   }, []);
 
   return (

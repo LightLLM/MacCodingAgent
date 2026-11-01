@@ -66,7 +66,7 @@ export function DownloadPanel() {
             id="license-key"
             value={license}
             onChange={(e) => setLicense(e.target.value)}
-            placeholder="MCA-XXXX-XXXX-XXXX-XXXX"
+            placeholder="MCA1.… signed Pro license"
             data-testid="license-input"
           />
           <button

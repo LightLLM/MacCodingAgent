@@ -9,10 +9,10 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const licenseKey = url.searchParams.get("license") ?? "";
   const email = url.searchParams.get("email") ?? "";
-  const { store, ready } = getBillingRuntime();
+  const { store, ready, config } = getBillingRuntime();
   await ready;
   const license = licenseKey
-    ? store.findByKey(licenseKey)
+    ? store.resolveLicense(licenseKey, config)
     : email
       ? store.findByEmail(email)
       : null;

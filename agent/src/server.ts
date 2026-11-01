@@ -65,7 +65,7 @@ export function createServer(
           type: string;
           data?: { object?: Record<string, unknown> };
         };
-        const license = await applyStripeEvent(billing, event);
+        const license = await applyStripeEvent(billing, event, billingConfig);
         res.json({ received: true, licenseKey: license?.licenseKey ?? null });
       } catch (error) {
         const message =
@@ -210,7 +210,7 @@ export function createServer(
       res.status(503).json({ error: "Billing store unavailable" });
       return;
     }
-    const license = billing.findByKey(req.params.key);
+    const license = billing.resolveLicense(req.params.key, billingConfig);
     if (!license) {
       res.status(404).json({ error: "License not found" });
       return;
@@ -226,7 +226,7 @@ export function createServer(
     const licenseKey = String(req.query.license ?? "");
     const email = String(req.query.email ?? "");
     const license = licenseKey
-      ? billing.findByKey(licenseKey)
+      ? billing.resolveLicense(licenseKey, billingConfig)
       : email
         ? billing.findByEmail(email)
         : null;

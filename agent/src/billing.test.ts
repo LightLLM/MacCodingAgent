@@ -34,8 +34,10 @@ async function tempBilling() {
 }
 
 describe("billing", () => {
-  it("mints MCA license keys", () => {
-    expect(mintLicenseKey()).toMatch(/^MCA-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}$/);
+  it("mints legacy MCA license keys", () => {
+    expect(mintLicenseKey()).toMatch(
+      /^MCA-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}$/,
+    );
   });
 
   it("creates demo checkout and unlocks Mac download", async () => {
@@ -52,21 +54,41 @@ describe("billing", () => {
   });
 
   it("applies Stripe checkout.session.completed events", async () => {
-    const { store } = await tempBilling();
-    const license = await applyStripeEvent(store, {
-      type: "checkout.session.completed",
-      data: {
-        object: {
-          id: "cs_test_123",
-          customer_email: "paid@example.com",
-          metadata: { plan: "pro_monthly" },
-          customer: "cus_123",
-          subscription: "sub_123",
+    const { store, config } = await tempBilling();
+    const license = await applyStripeEvent(
+      store,
+      {
+        type: "checkout.session.completed",
+        data: {
+          object: {
+            id: "cs_test_123",
+            customer_email: "paid@example.com",
+            metadata: { plan: "pro_monthly" },
+            customer: "cus_123",
+            subscription: "sub_123",
+          },
         },
       },
-    });
+      config,
+    );
     expect(license?.email).toBe("paid@example.com");
     expect(license?.status).toBe("active");
     expect(license?.macDownloadUnlocked).toBe(true);
+    expect(license?.licenseKey.startsWith("MCA1.")).toBe(true);
+  });
+
+  it("verifies signed licenses without shared storage", async () => {
+    const { store, config } = await tempBilling();
+    const checkout = await createCheckoutSession(store, config, {
+      email: "stateless@example.com",
+      plan: "pro_monthly",
+    });
+    const key = new URL(checkout.url).searchParams.get("license")!;
+    const fresh = new BillingStore(config.dataDir);
+    await fresh.load();
+    // Simulate another serverless isolate by resolving only via signature
+    const resolved = fresh.resolveLicense(key, config);
+    expect(resolved?.email).toBe("stateless@example.com");
+    expect(entitlementsFor(resolved!).macDownloadUnlocked).toBe(true);
   });
 });

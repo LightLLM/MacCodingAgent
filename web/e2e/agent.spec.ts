@@ -61,9 +61,9 @@ test.describe("Mac Coding Agent web app", () => {
     await page.getByTestId("billing-email").fill("buyer@example.com");
     await page.getByTestId("checkout-pro_lifetime").click();
     await expect(page.getByTestId("payment-success")).toBeVisible({ timeout: 20_000 });
-    await expect(page.getByTestId("issued-license")).toContainText(/MCA-/);
+    await expect(page.getByTestId("issued-license")).toContainText(/MCA1\./);
     const license = (await page.getByTestId("issued-license").textContent())?.trim();
-    expect(license).toMatch(/^MCA-/);
+    expect(license).toMatch(/^MCA1\./);
 
     await page.goto("/download");
     await page.getByTestId("license-input").fill(license!);

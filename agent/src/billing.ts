@@ -23,6 +23,7 @@ export interface BillingConfig {
   webhookSecret: string | null;
   priceMonthly: string | null;
   priceLifetime: string | null;
+  licenseSecret: string;
   appUrl: string;
   dataDir: string;
 }
@@ -42,6 +43,13 @@ function emptyState(): BillingState {
   return { licenses: [] };
 }
 
+function resolveAppUrl(env: NodeJS.ProcessEnv): string {
+  if (env.MCA_APP_URL) return env.MCA_APP_URL;
+  if (env.NEXT_PUBLIC_APP_URL) return env.NEXT_PUBLIC_APP_URL;
+  if (env.VERCEL_URL) return `https://${env.VERCEL_URL}`;
+  return "http://127.0.0.1:3000";
+}
+
 export function loadBillingConfig(
   env: NodeJS.ProcessEnv = process.env,
   dataDir: string,
@@ -55,7 +63,11 @@ export function loadBillingConfig(
     webhookSecret: env.STRIPE_WEBHOOK_SECRET || null,
     priceMonthly: env.STRIPE_PRICE_ID_PRO_MONTHLY || null,
     priceLifetime: env.STRIPE_PRICE_ID_PRO_LIFETIME || null,
-    appUrl: env.MCA_APP_URL || env.NEXT_PUBLIC_APP_URL || "http://127.0.0.1:3000",
+    licenseSecret:
+      env.MCA_LICENSE_SECRET ||
+      env.STRIPE_SECRET_KEY ||
+      "mac-coding-agent-dev-license-secret",
+    appUrl: resolveAppUrl(env),
     dataDir,
   };
 }
@@ -93,6 +105,15 @@ export class BillingStore {
     return this.state.licenses.find((l) => l.licenseKey === licenseKey);
   }
 
+  resolveLicense(
+    licenseKey: string,
+    config: BillingConfig,
+  ): LicenseRecord | undefined {
+    const stored = this.findByKey(licenseKey);
+    if (stored) return stored;
+    return verifySignedLicense(licenseKey, config);
+  }
+
   findByEmail(email: string): LicenseRecord | undefined {
     return this.state.licenses.find(
       (l) => l.email.toLowerCase() === email.toLowerCase(),
@@ -113,6 +134,107 @@ export class BillingStore {
 export function mintLicenseKey(): string {
   const body = randomBytes(8).toString("hex").toUpperCase();
   return `MCA-${body.slice(0, 4)}-${body.slice(4, 8)}-${body.slice(8, 12)}-${body.slice(12, 16)}`;
+}
+
+function b64url(input: string): string {
+  return Buffer.from(input, "utf8")
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/g, "");
+}
+
+function fromB64url(input: string): string {
+  const padded = input.replace(/-/g, "+").replace(/_/g, "/");
+  return Buffer.from(padded, "base64").toString("utf8");
+}
+
+export function mintSignedLicense(
+  config: BillingConfig,
+  input: {
+    email: string;
+    plan: Exclude<PlanId, "free">;
+    status?: LicenseRecord["status"];
+  },
+): LicenseRecord {
+  const now = new Date().toISOString();
+  const payload = {
+    email: input.email.trim().toLowerCase(),
+    plan: input.plan,
+    status: input.status ?? "active",
+    iat: Math.floor(Date.now() / 1000),
+  };
+  const body = b64url(JSON.stringify(payload));
+  const sig = createHmac("sha256", config.licenseSecret)
+    .update(body)
+    .digest("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/g, "")
+    .slice(0, 24);
+  const licenseKey = `MCA1.${body}.${sig}`;
+  return {
+    licenseKey,
+    email: payload.email,
+    plan: payload.plan,
+    status: payload.status,
+    stripeCustomerId: null,
+    stripeSubscriptionId: null,
+    stripeSessionId: null,
+    macDownloadUnlocked: true,
+    createdAt: now,
+    updatedAt: now,
+  };
+}
+
+export function verifySignedLicense(
+  licenseKey: string,
+  config: BillingConfig,
+): LicenseRecord | undefined {
+  if (!licenseKey.startsWith("MCA1.")) return undefined;
+  const parts = licenseKey.split(".");
+  if (parts.length !== 3) return undefined;
+  const [, body, sig] = parts;
+  const expected = createHmac("sha256", config.licenseSecret)
+    .update(body)
+    .digest("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/g, "")
+    .slice(0, 24);
+  try {
+    if (
+      !timingSafeEqual(Buffer.from(expected), Buffer.from(sig)) &&
+      expected !== sig
+    ) {
+      return undefined;
+    }
+  } catch {
+    if (expected !== sig) return undefined;
+  }
+  try {
+    const payload = JSON.parse(fromB64url(body)) as {
+      email: string;
+      plan: Exclude<PlanId, "free">;
+      status?: LicenseRecord["status"];
+      iat?: number;
+    };
+    const now = new Date().toISOString();
+    return {
+      licenseKey,
+      email: payload.email,
+      plan: payload.plan,
+      status: payload.status ?? "active",
+      stripeCustomerId: null,
+      stripeSubscriptionId: null,
+      stripeSessionId: null,
+      macDownloadUnlocked: true,
+      createdAt: now,
+      updatedAt: now,
+    };
+  } catch {
+    return undefined;
+  }
 }
 
 export function plans() {
@@ -169,25 +291,18 @@ export async function createCheckoutSession(
   if (!email.includes("@")) throw new Error("Valid email required");
 
   if (!config.secretKey) {
-    const licenseKey = mintLicenseKey();
-    const now = new Date().toISOString();
-    store.upsert({
-      licenseKey,
+    const record = mintSignedLicense(config, {
       email,
       plan: input.plan,
       status: "demo",
-      stripeCustomerId: null,
-      stripeSubscriptionId: null,
-      stripeSessionId: `demo_${licenseKey}`,
-      macDownloadUnlocked: true,
-      createdAt: now,
-      updatedAt: now,
     });
-    const url = `${config.appUrl}/billing/success?demo=1&license=${encodeURIComponent(licenseKey)}&email=${encodeURIComponent(email)}`;
+    record.stripeSessionId = `demo_${record.licenseKey}`;
+    store.upsert(record);
+    const url = `${config.appUrl}/billing/success?demo=1&license=${encodeURIComponent(record.licenseKey)}&email=${encodeURIComponent(email)}`;
     return {
       mode: "demo",
       url,
-      sessionId: `demo_${licenseKey}`,
+      sessionId: record.stripeSessionId,
       publishableKey: config.publishableKey,
     };
   }
@@ -247,9 +362,10 @@ export async function finalizeCheckoutSession(
   sessionId: string,
 ): Promise<LicenseRecord> {
   if (sessionId.startsWith("demo_")) {
-    const existing = store
-      .list()
-      .find((l) => l.stripeSessionId === sessionId || l.licenseKey === sessionId.replace(/^demo_/, ""));
+    const key = sessionId.replace(/^demo_/, "");
+    const existing =
+      store.list().find((l) => l.stripeSessionId === sessionId) ||
+      store.resolveLicense(key, config);
     if (existing) return existing;
     throw new Error("Demo license not found");
   }
@@ -279,21 +395,16 @@ export async function finalizeCheckoutSession(
   const existing = store.list().find((l) => l.stripeSessionId === session.id);
   if (existing) return existing;
 
-  const now = new Date().toISOString();
-  const record: LicenseRecord = {
-    licenseKey: mintLicenseKey(),
+  const record = mintSignedLicense(config, {
     email,
     plan,
     status: session.payment_status === "paid" ? "active" : "past_due",
-    stripeCustomerId:
-      typeof session.customer === "string" ? session.customer : null,
-    stripeSubscriptionId:
-      typeof session.subscription === "string" ? session.subscription : null,
-    stripeSessionId: session.id,
-    macDownloadUnlocked: true,
-    createdAt: now,
-    updatedAt: now,
-  };
+  });
+  record.stripeCustomerId =
+    typeof session.customer === "string" ? session.customer : null;
+  record.stripeSubscriptionId =
+    typeof session.subscription === "string" ? session.subscription : null;
+  record.stripeSessionId = session.id;
   return store.upsert(record);
 }
 
@@ -331,6 +442,7 @@ export async function applyStripeEvent(
     type: string;
     data?: { object?: Record<string, unknown> };
   },
+  config: BillingConfig,
 ): Promise<LicenseRecord | null> {
   const obj = event.data?.object ?? {};
   if (event.type === "checkout.session.completed") {
@@ -351,20 +463,17 @@ export async function applyStripeEvent(
       existing.updatedAt = now;
       return store.upsert(existing);
     }
-    return store.upsert({
-      licenseKey: mintLicenseKey(),
+    const record = mintSignedLicense(config, {
       email,
       plan,
       status: "active",
-      stripeCustomerId:
-        typeof obj.customer === "string" ? obj.customer : null,
-      stripeSubscriptionId:
-        typeof obj.subscription === "string" ? obj.subscription : null,
-      stripeSessionId: sessionId,
-      macDownloadUnlocked: true,
-      createdAt: now,
-      updatedAt: now,
     });
+    record.stripeCustomerId =
+      typeof obj.customer === "string" ? obj.customer : null;
+    record.stripeSubscriptionId =
+      typeof obj.subscription === "string" ? obj.subscription : null;
+    record.stripeSessionId = sessionId;
+    return store.upsert(record);
   }
 
   if (
