@@ -24,3 +24,5 @@ macos/dist/
 macos/dist-release/
 macos/.cache/
 web/.data/
+docs/proof/macos-e2e-port.txt
+docs/proof/macos-electron-launch.log
