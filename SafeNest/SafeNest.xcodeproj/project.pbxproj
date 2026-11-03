@@ -1,0 +1,496 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000001 /* SafeNestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* SafeNestApp.swift */; };
+		A10000000000000000000002 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000002 /* AppModel.swift */; };
+		A10000000000000000000003 /* FamilyProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000003 /* FamilyProfile.swift */; };
+		A10000000000000000000004 /* SecurityCheckItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000004 /* SecurityCheckItem.swift */; };
+		A10000000000000000000005 /* LinkRiskResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000005 /* LinkRiskResult.swift */; };
+		A10000000000000000000006 /* PrivacyItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000006 /* PrivacyItem.swift */; };
+		A10000000000000000000007 /* OnboardingStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000007 /* OnboardingStep.swift */; };
+		A10000000000000000000008 /* SecurityCheckService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000008 /* SecurityCheckService.swift */; };
+		A10000000000000000000009 /* LinkRiskAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000009 /* LinkRiskAnalyzer.swift */; };
+		A1000000000000000000000A /* PrivacyGlanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000A /* PrivacyGlanceService.swift */; };
+		A1000000000000000000000B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000B /* RootView.swift */; };
+		A1000000000000000000000C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000C /* HomeView.swift */; };
+		A1000000000000000000000D /* SecurityCheckupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000D /* SecurityCheckupView.swift */; };
+		A1000000000000000000000E /* LinkHelperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000E /* LinkHelperView.swift */; };
+		A1000000000000000000000F /* PrivacyGlanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000F /* PrivacyGlanceView.swift */; };
+		A10000000000000000000010 /* FamilyProfilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000010 /* FamilyProfilesView.swift */; };
+		A10000000000000000000011 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000011 /* OnboardingView.swift */; };
+		A10000000000000000000012 /* StatusBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000012 /* StatusBadge.swift */; };
+		A10000000000000000000013 /* CheckRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000013 /* CheckRow.swift */; };
+		A10000000000000000000014 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000014 /* Assets.xcassets */; };
+		A10000000000000000000015 /* LinkRiskAnalyzerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000015 /* LinkRiskAnalyzerTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C10000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D10000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E10000000000000000000001;
+			remoteInfo = SafeNest;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B10000000000000000000001 /* SafeNestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeNestApp.swift; sourceTree = "<group>"; };
+		B10000000000000000000002 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		B10000000000000000000003 /* FamilyProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyProfile.swift; sourceTree = "<group>"; };
+		B10000000000000000000004 /* SecurityCheckItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityCheckItem.swift; sourceTree = "<group>"; };
+		B10000000000000000000005 /* LinkRiskResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkRiskResult.swift; sourceTree = "<group>"; };
+		B10000000000000000000006 /* PrivacyItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyItem.swift; sourceTree = "<group>"; };
+		B10000000000000000000007 /* OnboardingStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStep.swift; sourceTree = "<group>"; };
+		B10000000000000000000008 /* SecurityCheckService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityCheckService.swift; sourceTree = "<group>"; };
+		B10000000000000000000009 /* LinkRiskAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkRiskAnalyzer.swift; sourceTree = "<group>"; };
+		B1000000000000000000000A /* PrivacyGlanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyGlanceService.swift; sourceTree = "<group>"; };
+		B1000000000000000000000B /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		B1000000000000000000000C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		B1000000000000000000000D /* SecurityCheckupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityCheckupView.swift; sourceTree = "<group>"; };
+		B1000000000000000000000E /* LinkHelperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkHelperView.swift; sourceTree = "<group>"; };
+		B1000000000000000000000F /* PrivacyGlanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyGlanceView.swift; sourceTree = "<group>"; };
+		B10000000000000000000010 /* FamilyProfilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyProfilesView.swift; sourceTree = "<group>"; };
+		B10000000000000000000011 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		B10000000000000000000012 /* StatusBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBadge.swift; sourceTree = "<group>"; };
+		B10000000000000000000013 /* CheckRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckRow.swift; sourceTree = "<group>"; };
+		B10000000000000000000014 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B10000000000000000000015 /* LinkRiskAnalyzerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkRiskAnalyzerTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000016 /* SafeNest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SafeNest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B10000000000000000000017 /* SafeNestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafeNestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B10000000000000000000018 /* SafeNest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SafeNest.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F10000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F10000000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		G10000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				G10000000000000000000002 /* SafeNest */,
+				G10000000000000000000008 /* SafeNestTests */,
+				G10000000000000000000009 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		G10000000000000000000002 /* SafeNest */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000001 /* SafeNestApp.swift */,
+				B10000000000000000000018 /* SafeNest.entitlements */,
+				G10000000000000000000003 /* Models */,
+				G10000000000000000000004 /* Services */,
+				G10000000000000000000005 /* Views */,
+				G10000000000000000000007 /* Resources */,
+			);
+			path = SafeNest;
+			sourceTree = "<group>";
+		};
+		G10000000000000000000003 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000002 /* AppModel.swift */,
+				B10000000000000000000003 /* FamilyProfile.swift */,
+				B10000000000000000000004 /* SecurityCheckItem.swift */,
+				B10000000000000000000005 /* LinkRiskResult.swift */,
+				B10000000000000000000006 /* PrivacyItem.swift */,
+				B10000000000000000000007 /* OnboardingStep.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		G10000000000000000000004 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000008 /* SecurityCheckService.swift */,
+				B10000000000000000000009 /* LinkRiskAnalyzer.swift */,
+				B1000000000000000000000A /* PrivacyGlanceService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		G10000000000000000000005 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B1000000000000000000000B /* RootView.swift */,
+				B1000000000000000000000C /* HomeView.swift */,
+				B1000000000000000000000D /* SecurityCheckupView.swift */,
+				B1000000000000000000000E /* LinkHelperView.swift */,
+				B1000000000000000000000F /* PrivacyGlanceView.swift */,
+				B10000000000000000000010 /* FamilyProfilesView.swift */,
+				B10000000000000000000011 /* OnboardingView.swift */,
+				G10000000000000000000006 /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		G10000000000000000000006 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000012 /* StatusBadge.swift */,
+				B10000000000000000000013 /* CheckRow.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		G10000000000000000000007 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000014 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		G10000000000000000000008 /* SafeNestTests */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000015 /* LinkRiskAnalyzerTests.swift */,
+			);
+			path = SafeNestTests;
+			sourceTree = "<group>";
+		};
+		G10000000000000000000009 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000016 /* SafeNest.app */,
+				B10000000000000000000017 /* SafeNestTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E10000000000000000000001 /* SafeNest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = H10000000000000000000003 /* Build configuration list for PBXNativeTarget "SafeNest" */;
+			buildPhases = (
+				I10000000000000000000001 /* Sources */,
+				F10000000000000000000001 /* Frameworks */,
+				J10000000000000000000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SafeNest;
+			productName = SafeNest;
+			productReference = B10000000000000000000016 /* SafeNest.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E10000000000000000000002 /* SafeNestTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = H10000000000000000000004 /* Build configuration list for PBXNativeTarget "SafeNestTests" */;
+			buildPhases = (
+				I10000000000000000000002 /* Sources */,
+				F10000000000000000000002 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C10000000000000000000002 /* PBXTargetDependency */,
+			);
+			name = SafeNestTests;
+			productName = SafeNestTests;
+			productReference = B10000000000000000000017 /* SafeNestTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D10000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					E10000000000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					E10000000000000000000002 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = E10000000000000000000001;
+					};
+				};
+			};
+			buildConfigurationList = H10000000000000000000001 /* Build configuration list for PBXProject "SafeNest" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = G10000000000000000000001;
+			productRefGroup = G10000000000000000000009 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E10000000000000000000001 /* SafeNest */,
+				E10000000000000000000002 /* SafeNestTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		J10000000000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000014 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		I10000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000001 /* SafeNestApp.swift in Sources */,
+				A10000000000000000000002 /* AppModel.swift in Sources */,
+				A10000000000000000000003 /* FamilyProfile.swift in Sources */,
+				A10000000000000000000004 /* SecurityCheckItem.swift in Sources */,
+				A10000000000000000000005 /* LinkRiskResult.swift in Sources */,
+				A10000000000000000000006 /* PrivacyItem.swift in Sources */,
+				A10000000000000000000007 /* OnboardingStep.swift in Sources */,
+				A10000000000000000000008 /* SecurityCheckService.swift in Sources */,
+				A10000000000000000000009 /* LinkRiskAnalyzer.swift in Sources */,
+				A1000000000000000000000A /* PrivacyGlanceService.swift in Sources */,
+				A1000000000000000000000B /* RootView.swift in Sources */,
+				A1000000000000000000000C /* HomeView.swift in Sources */,
+				A1000000000000000000000D /* SecurityCheckupView.swift in Sources */,
+				A1000000000000000000000E /* LinkHelperView.swift in Sources */,
+				A1000000000000000000000F /* PrivacyGlanceView.swift in Sources */,
+				A10000000000000000000010 /* FamilyProfilesView.swift in Sources */,
+				A10000000000000000000011 /* OnboardingView.swift in Sources */,
+				A10000000000000000000012 /* StatusBadge.swift in Sources */,
+				A10000000000000000000013 /* CheckRow.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		I10000000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000015 /* LinkRiskAnalyzerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C10000000000000000000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E10000000000000000000001 /* SafeNest */;
+			targetProxy = C10000000000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		K10000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				ONLY_ACTIVE_ARCH = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		K10000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		K10000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SafeNest/SafeNest.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SafeNest;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "SafeNest — family cybersecurity for Apple devices";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.safenest.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		K10000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SafeNest/SafeNest.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SafeNest;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "SafeNest — family cybersecurity for Apple devices";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.safenest.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		K10000000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.safenest.app.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SafeNest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SafeNest";
+			};
+			name = Debug;
+		};
+		K10000000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.safenest.app.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SafeNest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SafeNest";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		H10000000000000000000001 /* Build configuration list for PBXProject "SafeNest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				K10000000000000000000001 /* Debug */,
+				K10000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		H10000000000000000000003 /* Build configuration list for PBXNativeTarget "SafeNest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				K10000000000000000000003 /* Debug */,
+				K10000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		H10000000000000000000004 /* Build configuration list for PBXNativeTarget "SafeNestTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				K10000000000000000000005 /* Debug */,
+				K10000000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D10000000000000000000001 /* Project object */;
+}
